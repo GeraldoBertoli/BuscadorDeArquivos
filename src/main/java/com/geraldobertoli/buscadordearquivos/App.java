@@ -1,13 +1,15 @@
 package com.geraldobertoli.buscadordearquivos;
 
-/**
- * Hello world!
- *
- */
+import com.geraldobertoli.buscadordearquivos.visao.PrincipalUI;
+
 public class App 
 {
+    /**
+     * Software para cópia de arquivos
+     * @author Geraldo Atilio Bertoli
+     */
     public static void main( String[] args )
     {
-        System.out.println( "Buscador de arquivos!" );
+        new PrincipalUI("Buscador de Arquivos");
     }
 }
