@@ -20,10 +20,15 @@ public abstract class Trabalho implements Runnable
     }
 
     @SuppressWarnings("unused")
-    private void notificaObservadoresProgresso()
+    protected void notificaObservadoresProgresso()
     {
         for (ProgressoEvento obs : observadores) {
             obs.aoAtualizarProgresso(this, progresso);
         }
+    }
+
+    protected void setProgresso(int progresso)
+    {
+        this.progresso = progresso;
     }
 }

@@ -12,18 +12,29 @@ public class GerenciaTrabalho
 
     public void iniciaTrabalho()
     {
-        processo = new Thread(trabalho);
+        if(processo != null)
+        {
+            if(!processo.isInterrupted())
+            {
+                processo.interrupt();
+            }
+        } else {
+            processo = new Thread(trabalho);
+        }
+
         processo.start();
     }
 
     public void paraTrabalho()
     {
-        try 
+        if(processo != null)
         {
-            processo.interrupt();
-        } catch (Exception e) 
-        {
-            System.err.println("Erro: Não existe nenhum trabalho em execução.");
+            if(!processo.isInterrupted())
+            {
+                processo.interrupt();
+            }
+        } else {
+            throw new NullPointerException("Erro: Processo não encontrado.");
         }
     }
 

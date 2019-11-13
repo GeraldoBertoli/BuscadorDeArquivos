@@ -5,6 +5,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,6 +19,8 @@ import java.awt.GridLayout;
 import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 
 
@@ -52,6 +55,7 @@ public class PrincipalUI extends JFrame
     private JButton btnCarregaDest;
     private JTextField txtDest;
     private JButton btnIniciar;
+    private JFileChooser chooser;
 
     
     public PrincipalUI(String titulo)
@@ -108,6 +112,26 @@ public class PrincipalUI extends JFrame
 
         btnCarregaOrigem = new JButton("Carregar");
         painelOrigem.add(btnCarregaOrigem);
+        btnCarregaOrigem.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                chooser = new JFileChooser(); 
+                chooser.setCurrentDirectory(new java.io.File("."));
+                chooser.setDialogTitle("Selecione a pasta de origem");
+                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                //
+                // desabilita a opção "All files".
+                //
+                chooser.setAcceptAllFileFilterUsed(false);
+                //    
+                if (chooser.showOpenDialog(janela) == JFileChooser.APPROVE_OPTION)
+                {
+                    //txtOrigem.setText(chooser.getCurrentDirectory().getPath());
+                    txtOrigem.setText(chooser.getSelectedFile() + "");
+                }
+            }
+        });
 
         painelOrigem.add(Box.createRigidArea(new Dimension(10, 0)));
 
@@ -129,7 +153,7 @@ public class PrincipalUI extends JFrame
         painelCentral.add(new JScrollPane(textXML));
 
         textFaltando = new JTextArea();
-        textFaltando.setEditable(false);
+        //textFaltando.setEditable(false);
         textFaltando.setBorder(new LineBorder(Color.GRAY));
         painelCentral.add(new JScrollPane(textFaltando));
     }
@@ -155,6 +179,25 @@ public class PrincipalUI extends JFrame
 
         btnCarregaDest = new JButton("Carregar");
         painelDest.add(btnCarregaDest);
+        btnCarregaDest.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                chooser = new JFileChooser(); 
+                chooser.setCurrentDirectory(new java.io.File("."));
+                chooser.setDialogTitle("Selecione a pasta de destino");
+                chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                //
+                // desabilita a opção "All files".
+                //
+                chooser.setAcceptAllFileFilterUsed(false);
+                //    
+                if (chooser.showOpenDialog(janela) == JFileChooser.APPROVE_OPTION)
+                { 
+                    txtDest.setText(chooser.getSelectedFile() + "");
+                }
+            }
+        });
 
         painelDest.add(Box.createRigidArea(new Dimension(10, 0)));
 
@@ -175,7 +218,15 @@ public class PrincipalUI extends JFrame
         {
             public void actionPerformed(ActionEvent e)
             {
-                JDialog copia = new CopiaUI(janela, "Processo de cópia de arquivos", true);
+                String [] temp = textXML.getText().split("\n");
+                List<String> listaArquivos = new ArrayList<String>();
+                for(int i = 0; i < temp.length; i++)
+                {
+                    listaArquivos.add(temp[i]);
+                }
+
+                JDialog copia = new CopiaUI(janela, "Processo de cópia de arquivos", true, 
+                    listaArquivos, txtOrigem.getText(), txtDest.getText());
                 copia.setLocationRelativeTo(janela);
                 copia.setVisible(true);
             }

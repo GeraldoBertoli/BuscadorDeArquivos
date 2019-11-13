@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.awt.event.ActionEvent;
 
 import javax.swing.BorderFactory;
@@ -15,6 +16,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import com.geraldobertoli.buscadordearquivos.controle.GerenciaTrabalhoControle;
+import com.geraldobertoli.buscadordearquivos.modelo.CopiaArquivosTrabalho;
+import com.geraldobertoli.buscadordearquivos.modelo.ProgressoEvento;
+import com.geraldobertoli.buscadordearquivos.modelo.Trabalho;
 
 public class CopiaUI extends JDialog
 {
@@ -31,10 +36,36 @@ public class CopiaUI extends JDialog
     private JLabel lblTarefa;
     private JProgressBar pBarTarefa;
     private JButton btnCancelar;
+    private List<String> listaArquivos;
+    private String origem, destino;
+    private GerenciaTrabalhoControle gerenciador;
 
-    public CopiaUI(Frame janela, String titulo, Boolean modal)
+    public CopiaUI(Frame janela, String titulo, Boolean modal, List<String> listaArquivos, String origem, String destino)
     {
         super(janela, titulo, modal);
+        this.listaArquivos = listaArquivos;
+        this.origem = origem;
+        this.destino = destino;
+
+        Trabalho trabalho = new CopiaArquivosTrabalho(listaArquivos, origem, destino);
+        trabalho.addObservadorProgresso(new ProgressoEvento()
+        {
+
+            @Override
+            public void aoAtualizarProgresso(Trabalho trabalho, int progresso)
+            {
+                atualizaProgresso(progresso);
+                if(obtemProgresso() == 100)
+                {
+                    painel.getRootPane().setVisible(false);
+                }
+            }
+            
+        });
+        
+        this.gerenciador = new GerenciaTrabalhoControle(trabalho);
+        this.gerenciador.iniciaTrabalho();
+
         montaJanela();
     }
 
@@ -94,13 +125,13 @@ public class CopiaUI extends JDialog
 
     }
 
-    public void atualizaProgresso(int progresso)
+    protected void atualizaProgresso(int progresso)
     {
         pBarTarefa.setString(progresso + "% concluído");
         pBarTarefa.setValue(progresso);
     }
-
-    public int consultaProgresso()
+    
+    protected int obtemProgresso()
     {
         return pBarTarefa.getValue();
     }
