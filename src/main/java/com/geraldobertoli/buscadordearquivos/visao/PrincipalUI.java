@@ -75,8 +75,8 @@ public class PrincipalUI extends JFrame
     private void preparaJanela()
     {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setMinimumSize(new Dimension(720, 480));
-        this.setSize(new Dimension(920, 540));
+        this.setMinimumSize(new Dimension(480, 480));
+        this.setSize(new Dimension(480, 480));
     }
 
     private void preparaPainelPrincipal()
@@ -151,11 +151,6 @@ public class PrincipalUI extends JFrame
         textXML = new JTextArea();
         textXML.setBorder(new LineBorder(Color.GRAY));
         painelCentral.add(new JScrollPane(textXML));
-
-        textFaltando = new JTextArea();
-        //textFaltando.setEditable(false);
-        textFaltando.setBorder(new LineBorder(Color.GRAY));
-        painelCentral.add(new JScrollPane(textFaltando));
     }
 
     private void preparaPainelSul()

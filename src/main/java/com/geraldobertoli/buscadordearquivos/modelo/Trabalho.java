@@ -6,7 +6,6 @@ import java.util.List;
 public abstract class Trabalho implements Runnable
 {
     private List<ProgressoEvento> observadores;
-    private int progresso = 0;
 
     public abstract void run();
 
@@ -20,15 +19,10 @@ public abstract class Trabalho implements Runnable
     }
 
     @SuppressWarnings("unused")
-    protected void notificaObservadoresProgresso()
+    protected void notificaObservadoresProgresso(int progresso)
     {
         for (ProgressoEvento obs : observadores) {
             obs.aoAtualizarProgresso(this, progresso);
         }
-    }
-
-    protected void setProgresso(int progresso)
-    {
-        this.progresso = progresso;
     }
 }

@@ -8,6 +8,7 @@ import java.util.List;
 public class CopiaArquivosTrabalho extends Trabalho {
     private String origem, destino;
     List<String> arquivos;
+    private int progresso;
 
     public CopiaArquivosTrabalho(List<String> arquivos, String origem, String destino) {
         this.origem = origem;
@@ -34,11 +35,11 @@ public class CopiaArquivosTrabalho extends Trabalho {
             }
         }
 
-        for (int i = 0; i < listaCopia.size(); i++) {
+        for (int i = 0; i < listaCopia.size(); i++) 
+        {
             try {
                 arquivo.copiaArquivo(listaCopia.get(i), destino);
-                setProgresso((int)(i/listaCopia.size()*100));
-                notificaObservadoresProgresso();
+                notificaObservadoresProgresso(((i * 100) / (listaCopia.size() - 1)));
             } catch (IOException e) {
                 e.printStackTrace();
             }

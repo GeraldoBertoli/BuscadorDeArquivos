@@ -29,6 +29,7 @@ public class CopiaUI extends JDialog
      */
     private static final long serialVersionUID = 1L;
 
+    private JDialog dialogo;
     private JPanel painel;
     private JPanel painelBotao;
 
@@ -46,6 +47,9 @@ public class CopiaUI extends JDialog
         this.listaArquivos = listaArquivos;
         this.origem = origem;
         this.destino = destino;
+        setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+
+        montaJanela();
 
         Trabalho trabalho = new CopiaArquivosTrabalho(listaArquivos, origem, destino);
         trabalho.addObservadorProgresso(new ProgressoEvento()
@@ -57,7 +61,7 @@ public class CopiaUI extends JDialog
                 atualizaProgresso(progresso);
                 if(obtemProgresso() == 100)
                 {
-                    painel.getRootPane().setVisible(false);
+                    dialogo.dispose();
                 }
             }
             
@@ -65,12 +69,11 @@ public class CopiaUI extends JDialog
         
         this.gerenciador = new GerenciaTrabalhoControle(trabalho);
         this.gerenciador.iniciaTrabalho();
-
-        montaJanela();
     }
 
     private void montaJanela()
     {
+        this.dialogo = this;
         this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         this.setResizable(false);
         this.setModal(true);
@@ -103,7 +106,7 @@ public class CopiaUI extends JDialog
         pBarTarefa = new JProgressBar(0, 100);
         pBarTarefa.setStringPainted(true);
         painel.add(pBarTarefa);
-        atualizaProgresso(0);
+        pBarTarefa.setValue(0);
 
         painel.add(Box.createRigidArea(new Dimension(0, 10)));
 
@@ -119,7 +122,8 @@ public class CopiaUI extends JDialog
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                //A implementar
+                gerenciador.paraTrabalho();
+                dialogo.dispose();
             }
         });
 
