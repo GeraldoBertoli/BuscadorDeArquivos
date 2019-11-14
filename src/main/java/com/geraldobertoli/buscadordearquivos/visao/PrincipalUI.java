@@ -74,6 +74,7 @@ public class PrincipalUI extends JFrame
 
     private void preparaJanela()
     {
+        this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setMinimumSize(new Dimension(480, 480));
         this.setSize(new Dimension(480, 480));
